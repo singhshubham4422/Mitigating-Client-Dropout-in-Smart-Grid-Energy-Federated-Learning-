@@ -1,0 +1,53 @@
+# ⚠️ Step 0 — Clean old data (IMPORTANT)
+# Why: avoids mixing 4, 8, 16 client data (VERY COMMON MISTAKE)
+
+Remove-Item processed_data\* -Recurse -Force
+Remove-Item logs\* -Recurse -Force
+
+
+# 🧩 STEP 1 — Generate data for each client size
+# IMPORTANT: Generate → Run → THEN move to next client size
+
+# ✅ For 4 Clients
+python preprocess_behavioral.py --clients 4
+
+# 🚀 STEP 2 — Run experiments (4 Clients)
+
+# Baseline
+python main_federated.py --clients 4
+
+# DP
+python main_federated.py --clients 4 --dp
+
+# SMPC
+python main_federated.py --clients 4 --secure
+
+# DP + SMPC
+python main_federated.py --clients 4 --dp --secure
+
+
+# ✅ For 8 Clients
+python preprocess_behavioral.py --clients 8
+
+# 🚀 Run experiments (8 Clients)
+
+python main_federated.py --clients 8
+python main_federated.py --clients 8 --dp
+python main_federated.py --clients 8 --secure
+python main_federated.py --clients 8 --dp --secure
+
+
+# ✅ For 16 Clients
+python preprocess_behavioral.py --clients 16
+
+# 🚀 Run experiments (16 Clients)
+
+python main_federated.py --clients 16
+python main_federated.py --clients 16 --dp
+python main_federated.py --clients 16 --secure
+python main_federated.py --clients 16 --dp --secure
+
+
+# 📊 STEP 3 — Generate graphs (AFTER ALL RUNS)
+
+python plot_results.py
